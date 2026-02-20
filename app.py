@@ -5,7 +5,8 @@ import pandas as pd
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
     page_title="SmartTradeNet",
-    layout="wide"
+    layout="wide",
+    page_icon="📊"
 )
 
 # ---------------- PREMIUM STYLING ----------------
@@ -16,9 +17,6 @@ body {
 }
 .main {
     background-color: #0E1117;
-}
-h1 {
-    font-size: 42px;
 }
 .stButton>button {
     background: linear-gradient(90deg,#00C6FF,#0072FF);
@@ -31,11 +29,15 @@ h1 {
 .stButton>button:hover {
     background: linear-gradient(90deg,#0072FF,#00C6FF);
 }
-.metric-card {
-    background-color: #161B22;
-    padding: 20px;
-    border-radius: 12px;
+.footer {
     text-align: center;
+    color: grey;
+    font-size: 14px;
+    margin-top: 50px;
+}
+a {
+    text-decoration: none;
+    color: #00C6FF;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -43,7 +45,6 @@ h1 {
 # ---------------- HEADER ----------------
 st.markdown("# 📊 SmartTradeNet")
 st.markdown("### AI-Powered Stock Insights for Smart Investors")
-st.markdown("Analyze trends. Understand momentum. Make informed decisions.")
 st.markdown("---")
 
 # ---------------- STOCK LIST ----------------
@@ -59,15 +60,7 @@ NIFTY_50 = {
     "ITC": "ITC.NS",
     "Maruti Suzuki": "MARUTI.NS",
     "ONGC": "ONGC.NS",
-    "Silver ETF": "SILVERBEES.NS",
-    "Bharti Airtel": "BHARTIARTL.NS",
-    "HCL Technologies": "HCLTECH.NS",
-    "Asian Paints": "ASIANPAINT.NS",
-    "Bajaj Finance": "BAJFINANCE.NS",
-    "Wipro": "WIPRO.NS",
-    "Adani Enterprises": "ADANIENT.NS",
-    "UltraTech Cement": "ULTRACEMCO.NS",
-    "Titan Company": "TITAN.NS"
+    "Silver ETF": "SILVERBEES.NS"
 }
 
 col1, col2 = st.columns([3,1])
@@ -105,7 +98,6 @@ if analyze:
 
         change_percent = ((current_price - data["Close"].iloc[-20]) / data["Close"].iloc[-20]) * 100
 
-        # ---------------- METRICS ----------------
         m1, m2, m3 = st.columns(3)
 
         with m1:
@@ -118,21 +110,38 @@ if analyze:
             st.metric("20-Day Change", f"{round(change_percent,2)} %")
 
         st.markdown("---")
-
-        # ---------------- CHART ----------------
         st.subheader("📈 Price Trend")
         st.line_chart(data[["Close", "20_MA"]])
 
         st.markdown("---")
-
-        # ---------------- SMART SIGNAL ----------------
         st.subheader("🧠 Smart Signal")
 
         if current_price > moving_avg:
-            st.success("🟢 BUY SIGNAL — Positive Momentum Detected")
+            st.success("🟢 BUY SIGNAL — Positive Momentum")
         elif current_price < moving_avg:
-            st.error("🔴 SELL SIGNAL — Downward Trend Detected")
+            st.error("🔴 SELL SIGNAL — Downward Trend")
         else:
-            st.warning("🟡 HOLD — Market Consolidation Phase")
+            st.warning("🟡 HOLD — Market Consolidation")
 
-        st.caption("Educational tool only. Not financial advice.")
+# ---------------- ABOUT SECTION ----------------
+st.markdown("---")
+st.subheader("ℹ️ About SmartTradeNet")
+
+st.write("""
+SmartTradeNet is a beginner-friendly stock analysis platform that uses 
+real-time market data to generate simple Buy, Hold, or Sell signals 
+based on trend analysis.
+
+It is designed to make financial insights easy to understand 
+without complex trading jargon.
+""")
+
+# ---------------- FOOTER ----------------
+st.markdown("""
+<div class="footer">
+Built by <b>Kona sai tharun</b> | SmartTradeNet 2026 <br>
+<a href="https://github.com/KONASAITHARUN/smarttradenet" target="_blank">
+View Source Code on GitHub
+</a>
+</div>
+""", unsafe_allow_html=True)
